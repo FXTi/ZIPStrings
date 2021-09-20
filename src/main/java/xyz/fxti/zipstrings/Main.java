@@ -35,7 +35,8 @@ public class Main {
                 final ZipEntry entry = entries.nextElement();
                 final String entryName = entry.getName();
 
-                if (entryName.startsWith("libs/") && entryName.endsWith(".jar")) {
+                if (entryName.equals("classes.jar")
+                        || (entryName.startsWith("libs/") && entryName.endsWith(".jar"))) {
                     final InputStream inputStream = archive.getInputStream(entry);
                     final ZipInputStream zipInputStream = new ZipInputStream(inputStream);
 
@@ -69,7 +70,7 @@ public class Main {
 
     static void merge(Map<String, BigInteger> res, Map<String, BigInteger> tmp) {
         for (Entry entry : tmp.entrySet()) {
-            String key = (String) entry.getKey();
+            final String key = (String) entry.getKey();
             res.put(key, ((BigInteger) entry.getValue()).add(res.containsKey(key) ? res.get(key) : BigInteger.ZERO));
         }
     }
