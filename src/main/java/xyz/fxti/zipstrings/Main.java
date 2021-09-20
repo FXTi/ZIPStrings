@@ -16,6 +16,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
+import org.apache.commons.io.IOUtils;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
 
@@ -43,7 +44,7 @@ public class Main {
                     ZipEntry zipEntry = null;
                     while ((zipEntry = zipInputStream.getNextEntry()) != null) {
                         if (zipEntry.getName().endsWith(".class")) {
-                            merge(res, runInner(zipInputStream.readAllBytes()));
+                            merge(res, runInner(IOUtils.toByteArray(zipInputStream)));
                         }
                     }
 
@@ -58,7 +59,7 @@ public class Main {
 
                 if (entryName.endsWith(".class")) {
                     final InputStream inputStream = archive.getInputStream(entry);
-                    merge(res, runInner(inputStream.readAllBytes()));
+                    merge(res, runInner(IOUtils.toByteArray(inputStream)));
                     inputStream.close();
                 }
             }
